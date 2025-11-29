@@ -114,7 +114,10 @@ export default function TituloPage({ params }: PageProps) {
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
               <h1 className="text-3xl font-bold text-blue-900 mb-4">
-                {tituloNum === '0' ? 'Título Preliminar' : `Título ${numberToRoman(parseInt(tituloNum))}`} - {tituloName}
+                {tituloNum === '0' 
+                  ? `Título Preliminar - ${tituloName}` 
+                  : `Título ${numberToRoman(parseInt(tituloNum))} - ${tituloName}`
+                }
               </h1>
               <div className="flex items-center justify-between">
                 <p className="text-gray-600">

@@ -164,23 +164,6 @@ export default function HomePage() {
           </div>
         </div>
       )}
-
-      {/* Info Box - Always at bottom */}
-      <div className="px-4 md:px-8 pb-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded">
-            <h3 className="font-semibold text-blue-900 mb-2">
-              ℹ️ Sobre esta herramienta
-            </h3>
-            <p className="text-gray-700 text-sm">
-              Esta aplicación permite consultar de forma rápida y sencilla todos los artículos 
-              de la Constitución Española. Cada artículo incluye un enlace directo al texto 
-              oficial publicado en el BOE. Utiliza el buscador o navega por la estructura 
-              jerárquica usando el menú lateral.
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

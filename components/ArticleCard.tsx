@@ -44,10 +44,10 @@ export default function ArticleCard({
             {getTitle()}
           </h2>
           {(titulo || capitulo) && numero < 200 && (
-            <div className="text-base text-gray-700">
+            <div className="text-base text-gray-400">
               {titulo && titulo}
               {titulo && capitulo && ' - '}
-              {capitulo && `Capítulo ${capitulo}`}
+              {capitulo && capitulo}
               {seccion && ` - ${seccion}`}
             </div>
           )}
@@ -68,7 +68,6 @@ export default function ArticleCard({
       {explicacion_sencilla && showExplanation && (
         <div className="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
           <h3 className="text-lg font-semibold text-blue-900 mb-2 flex items-center">
-            <span className="mr-2">💡</span>
             Explicación Sencilla
           </h3>
           <p className="text-gray-700 leading-relaxed">

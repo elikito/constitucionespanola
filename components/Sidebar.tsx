@@ -105,32 +105,41 @@ export default function Sidebar({ titulos }: SidebarProps) {
 
   // Construir jerarquía de capítulos y secciones
   const buildHierarchy = (articles: Article[]) => {
-    const hierarchy: {
-      [capitulo: string]: {
-        articles: Article[];
-        secciones: { [seccion: string]: Article[] };
-      };
-    } = {};
+    const hierarchy: Array<{
+      capitulo: string | null;
+      seccion: string | null;
+      articles: Article[];
+    }> = [];
 
+    // Agrupar por capítulo y sección manteniendo el orden
+    const seen = new Set<string>();
+    
     articles.forEach(article => {
-      const cap = article.capitulo || 'Sin capítulo';
-      const sec = article.seccion || '';
-
-      if (!hierarchy[cap]) {
-        hierarchy[cap] = { articles: [], secciones: {} };
-      }
-
-      if (sec) {
-        if (!hierarchy[cap].secciones[sec]) {
-          hierarchy[cap].secciones[sec] = [];
-        }
-        hierarchy[cap].secciones[sec].push(article);
-      } else {
-        hierarchy[cap].articles.push(article);
+      const key = `${article.capitulo || 'null'}-${article.seccion || 'null'}`;
+      
+      if (!seen.has(key)) {
+        seen.add(key);
+        const group = articles.filter(a => 
+          (a.capitulo || 'null') === (article.capitulo || 'null') && 
+          (a.seccion || 'null') === (article.seccion || 'null')
+        );
+        hierarchy.push({
+          capitulo: article.capitulo || null,
+          seccion: article.seccion || null,
+          articles: group
+        });
       }
     });
 
     return hierarchy;
+  };
+
+  const getCapituloOrdinal = (capitulo: string): string => {
+    const match = capitulo.match(/\d+/);
+    if (match) {
+      return numberToOrdinal(parseInt(match[0]));
+    }
+    return capitulo;
   };
 
   const toggleTitle = async (numero: number) => {
@@ -225,49 +234,37 @@ export default function Sidebar({ titulos }: SidebarProps) {
                     <div className="max-h-96 overflow-y-auto">
                       {(() => {
                         const hierarchy = buildHierarchy(tituloArticles[titulo.numero]);
-                        return Object.entries(hierarchy).map(([capitulo, capData]) => {
-                          const capNum = capitulo.replace('Capítulo ', '').trim();
-                          return (
-                            <div key={capitulo} className="mb-3">
-                              {capitulo !== 'Sin capítulo' && (
-                                <div className="px-4 py-1 text-xs font-semibold text-gray-700">
-                                  Capítulo {numberToOrdinal(parseInt(capNum) || 0)}
-                                </div>
-                              )}
-                              
-                              {Object.keys(capData.secciones).length > 0 ? (
-                                Object.entries(capData.secciones).map(([seccion, articles]) => (
-                                <div key={seccion} className="ml-2">
-                                  <div className="px-4 py-1 text-xs text-gray-600">
-                                    {seccion}
-                                  </div>
-                                  {articles.map((article) => (
-                                    <Link
-                                      key={article.numero_articulo}
-                                      href={`/articulo/${article.numero_articulo}`}
-                                      className="block px-4 py-1.5 text-sm hover:bg-blue-50 rounded transition text-gray-700 ml-2"
-                                      onClick={() => isMobile && setIsOpen(false)}
-                                    >
-                                      Artículo {article.numero_articulo}
-                                    </Link>
-                                  ))}
-                                </div>
-                              ))
-                            ) : (
-                              capData.articles.map((article) => (
+                        return hierarchy.map((group, index) => (
+                          <div key={index} className="mb-2">
+                            {/* Mostrar Capítulo si existe */}
+                            {group.capitulo && (
+                              <div className="px-4 py-1 text-xs font-semibold text-gray-700">
+                                Capítulo {getCapituloOrdinal(group.capitulo)}
+                              </div>
+                            )}
+                            
+                            {/* Mostrar Sección si existe */}
+                            {group.seccion && (
+                              <div className="px-4 py-1 text-xs text-gray-600 ml-2">
+                                {group.seccion}
+                              </div>
+                            )}
+                            
+                            {/* Mostrar artículos */}
+                            <div className={group.seccion ? 'ml-4' : group.capitulo ? 'ml-2' : ''}>
+                              {group.articles.map((article) => (
                                 <Link
                                   key={article.numero_articulo}
                                   href={`/articulo/${article.numero_articulo}`}
                                   className="block px-4 py-1.5 text-sm hover:bg-blue-50 rounded transition text-gray-700"
                                   onClick={() => isMobile && setIsOpen(false)}
                                 >
-                                  Artículo {article.numero_articulo}
+                                  a.{article.numero_articulo}
                                 </Link>
-                              ))
-                            )}
+                              ))}
+                            </div>
                           </div>
-                        );
-                        });
+                        ));
                       })()}
                     </div>
                   </>

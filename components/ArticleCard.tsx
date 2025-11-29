@@ -77,7 +77,7 @@ export default function ArticleCard({
       )}
 
       <div className="prose prose-lg max-w-none">
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">Texto oficial</h3>
+        {/* <h3 className="text-lg font-semibold text-gray-900 mb-3">Texto oficial</h3> */}
         <p className="text-gray-800 leading-relaxed whitespace-pre-line">
           {texto}
         </p>

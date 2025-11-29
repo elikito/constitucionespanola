@@ -175,9 +175,13 @@ export default function Sidebar({ titulos }: SidebarProps) {
                   </div>
                 ) : tituloArticles[titulo.numero] && tituloArticles[titulo.numero].length > 0 ? (
                   <>
-                    <div className="px-4 py-1 text-xs text-gray-500 font-semibold">
-                      {tituloArticles[titulo.numero].length} artículos
-                    </div>
+                    <Link
+                      href={`/titulo/${titulo.numero}`}
+                      className="px-4 py-1 text-xs text-blue-600 hover:text-blue-800 font-semibold hover:underline cursor-pointer block"
+                      onClick={() => isMobile && setIsOpen(false)}
+                    >
+                      {tituloArticles[titulo.numero].length} artículos →
+                    </Link>
                     <div className="max-h-60 overflow-y-auto">
                       {tituloArticles[titulo.numero].map((article) => (
                         <Link

@@ -4,14 +4,20 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, X } from 'lucide-react';
 
-interface SearchResult {
+export interface SearchResult {
   numero_articulo: number;
   titulo?: string;
   capitulo?: string;
   texto: string;
+  explicacion_sencilla?: string;
 }
 
-export default function SearchBar() {
+interface SearchBarProps {
+  onSearch?: (query: string, results: SearchResult[]) => void;
+  showDropdown?: boolean;
+}
+
+export default function SearchBar({ onSearch, showDropdown = true }: SearchBarProps) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,9 +49,15 @@ export default function SearchBar() {
         const data = await response.json();
         setResults(data.results || []);
         setShowResults(true);
+        if (onSearch) {
+          onSearch(query, data.results || []);
+        }
       } catch (error) {
         console.error('Error searching:', error);
         setResults([]);
+        if (onSearch) {
+          onSearch(query, []);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -86,7 +98,7 @@ export default function SearchBar() {
         )}
       </div>
 
-      {showResults && results.length > 0 && (
+      {showDropdown && showResults && results.length > 0 && (
         <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-xl max-h-96 overflow-y-auto">
           {results.map((result) => (
             <button
@@ -112,7 +124,7 @@ export default function SearchBar() {
         </div>
       )}
 
-      {showResults && query.length >= 2 && results.length === 0 && !isLoading && (
+      {showDropdown && showResults && query.length >= 2 && results.length === 0 && !isLoading && (
         <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-xl p-4 text-center text-gray-600">
           No se encontraron resultados
         </div>

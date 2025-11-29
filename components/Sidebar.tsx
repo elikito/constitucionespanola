@@ -159,7 +159,6 @@ export default function Sidebar({ titulos }: SidebarProps) {
                           key={article.numero_articulo}
                           href={`/articulo/${article.numero_articulo}`}
                           className="block px-4 py-2 text-sm hover:bg-blue-50 rounded-lg transition text-gray-700"
-                          onClick={() => isMobile && setIsOpen(false)}
                         >
                           Artículo {article.numero_articulo}
                         </Link>

@@ -93,10 +93,10 @@ export default function Sidebar({ titulos }: SidebarProps) {
 
   const sidebarContent = (
     <div className="h-full overflow-y-auto bg-gray-50 border-r border-gray-200 p-4">
-      <div className="space-y-2">
+      <div className="space-y-1">
         <Link 
           href="/preambulo"
-          className="block px-4 py-2 rounded-lg hover:bg-blue-50 text-blue-900 font-semibold transition"
+          className="block px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-900 transition"
           onClick={() => isMobile && setIsOpen(false)}
         >
           Preámbulo
@@ -104,20 +104,20 @@ export default function Sidebar({ titulos }: SidebarProps) {
         
         <Link 
           href="/titulo/0"
-          className="block px-4 py-2 rounded-lg hover:bg-blue-50 text-blue-900 font-semibold transition"
+          className="block px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-900 transition"
           onClick={() => isMobile && setIsOpen(false)}
         >
           Título Preliminar
         </Link>
 
         {titulos.filter(t => t.numero > 0).map((titulo) => (
-          <div key={titulo.numero} className="border-b border-gray-200 pb-2">
+          <div key={titulo.numero}>
             <button
               onClick={() => toggleTitle(titulo.numero)}
-              className="w-full flex items-center justify-between px-4 py-2 hover:bg-blue-50 rounded-lg transition"
+              className="w-full flex items-center justify-between px-4 py-2 hover:bg-blue-50 rounded-lg transition text-left"
             >
-              <span className="font-semibold text-gray-800">
-                Título {titulo.numero}: {titulo.nombre}
+              <span className="text-gray-700 hover:text-blue-900">
+                Título {numberToRoman(titulo.numero)}
               </span>
               {expandedTitles.has(titulo.numero) ? (
                 <ChevronDown className="w-5 h-5 text-gray-600" />
@@ -182,7 +182,7 @@ export default function Sidebar({ titulos }: SidebarProps) {
         
         <Link 
           href="/disposiciones"
-          className="block px-4 py-2 rounded-lg hover:bg-blue-50 text-blue-900 font-semibold transition"
+          className="block px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-900 transition"
           onClick={() => isMobile && setIsOpen(false)}
         >
           Disposiciones

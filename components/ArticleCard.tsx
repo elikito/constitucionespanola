@@ -1,5 +1,4 @@
 import { ExternalLink } from 'lucide-react';
-import Link from 'next/link';
 
 interface ArticleCardProps {
   numero: number;
@@ -58,7 +57,8 @@ export default function ArticleCard({
           rel="noopener noreferrer"
           className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition text-sm"
         >
-          <span>Ver en BOE</span>
+          <span className="hidden md:inline">Ver en BOE</span>
+          <span className="md:hidden">BOE</span>
           <ExternalLink className="w-4 h-4" />
         </a>
       </div>
@@ -81,17 +81,6 @@ export default function ArticleCard({
           {texto}
         </p>
       </div>
-
-      {numero < 200 && (
-        <div className="mt-4 pt-4 border-t border-gray-200">
-          <Link 
-            href={`/articulo/${numero}`}
-            className="text-blue-600 hover:text-blue-800 font-medium transition"
-          >
-            Ver detalles →
-          </Link>
-        </div>
-      )}
     </article>
   );
 }

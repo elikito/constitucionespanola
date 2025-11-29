@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import SearchBar, { SearchResult } from './SearchBar';
 import ArticleCard from './ArticleCard';
-import Link from 'next/link';
-import { BookOpen, Scale, FileText } from 'lucide-react';
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -85,50 +83,9 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Quick Access Cards - Solo mostrar si no hay búsqueda */}
+        {/* Structure Overview - Solo mostrar si no hay búsqueda */}
         {!searchQuery && (
           <>
-            <div className="grid md:grid-cols-3 gap-6 mb-12">
-              <Link 
-                href="/preambulo"
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition group"
-              >
-                <div className="flex items-center mb-3">
-                  <BookOpen className="w-8 h-8 text-blue-600 mr-3" />
-                  <h3 className="text-lg font-semibold text-gray-800">Preámbulo</h3>
-                </div>
-                <p className="text-gray-600 text-sm">
-                  Introducción y principios fundacionales
-                </p>
-              </Link>
-
-              <Link 
-                href="/titulo/0"
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition group"
-              >
-                <div className="flex items-center mb-3">
-                  <Scale className="w-8 h-8 text-blue-600 mr-3" />
-                  <h3 className="text-lg font-semibold text-gray-800">Título Preliminar</h3>
-                </div>
-                <p className="text-gray-600 text-sm">
-                  Artículos 1-9: Fundamentos del Estado
-                </p>
-              </Link>
-
-              <Link 
-                href="/disposiciones"
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition group"
-              >
-                <div className="flex items-center mb-3">
-                  <FileText className="w-8 h-8 text-blue-600 mr-3" />
-                  <h3 className="text-lg font-semibold text-gray-800">Disposiciones</h3>
-                </div>
-                <p className="text-gray-600 text-sm">
-                  Adicionales, transitorias y finales
-                </p>
-              </Link>
-            </div>
-
             {/* Structure Overview */}
             <div className="bg-white rounded-lg shadow-md p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">

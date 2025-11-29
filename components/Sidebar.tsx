@@ -55,6 +55,23 @@ export default function Sidebar({ titulos }: SidebarProps) {
     return result;
   };
 
+  const getArticleRange = (tituloNum: number): string => {
+    const ranges: { [key: number]: string } = {
+      0: 'a.1-9',
+      1: 'a.10-55',
+      2: 'a.56-65',
+      3: 'a.66-96',
+      4: 'a.97-107',
+      5: 'a.108-116',
+      6: 'a.117-127',
+      7: 'a.128-136',
+      8: 'a.137-158',
+      9: 'a.159-165',
+      10: 'a.166-169'
+    };
+    return ranges[tituloNum] || '';
+  };
+
   const fetchArticlesForTitle = async (numero: number) => {
     if (tituloArticles[numero]) return; // Ya cargados
     
@@ -104,10 +121,13 @@ export default function Sidebar({ titulos }: SidebarProps) {
         
         <Link 
           href="/titulo/0"
-          className="block px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-900 transition"
+          className="block px-4 py-2 rounded-lg hover:bg-blue-50 transition"
           onClick={() => isMobile && setIsOpen(false)}
         >
-          Título Preliminar
+          <div className="flex flex-col">
+            <span className="text-gray-700 hover:text-blue-900">Título Preliminar</span>
+            <span className="text-xs text-gray-500">a.1-9</span>
+          </div>
         </Link>
 
         {titulos.filter(t => t.numero > 0).map((titulo) => (
@@ -116,9 +136,14 @@ export default function Sidebar({ titulos }: SidebarProps) {
               onClick={() => toggleTitle(titulo.numero)}
               className="w-full flex items-center justify-between px-4 py-2 hover:bg-blue-50 rounded-lg transition text-left"
             >
-              <span className="text-gray-700 hover:text-blue-900">
-                Título {numberToRoman(titulo.numero)}
-              </span>
+              <div className="flex flex-col">
+                <span className="text-gray-700 hover:text-blue-900">
+                  Título {numberToRoman(titulo.numero)}
+                </span>
+                <span className="text-xs text-gray-500">
+                  {getArticleRange(titulo.numero)}
+                </span>
+              </div>
               {expandedTitles.has(titulo.numero) ? (
                 <ChevronDown className="w-5 h-5 text-gray-600" />
               ) : (
@@ -195,7 +220,7 @@ export default function Sidebar({ titulos }: SidebarProps) {
       <>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="fixed bottom-4 right-4 z-50 bg-blue-900 text-white p-4 rounded-full shadow-lg hover:bg-blue-800 transition"
+          className="fixed bottom-4 left-4 z-50 bg-blue-900 text-white p-4 rounded-full shadow-lg hover:bg-blue-800 transition"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>

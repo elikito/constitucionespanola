@@ -135,22 +135,25 @@ export default function Sidebar({ titulos }: SidebarProps) {
   };
 
   const getCapituloOrdinal = (capitulo: string): string => {
-    // Si ya viene con ordinal (primero, segundo...), devolverlo tal cual
-    if (capitulo.includes('primero') || capitulo.includes('segundo') || 
-        capitulo.includes('tercero') || capitulo.includes('cuarto') || 
-        capitulo.includes('quinto') || capitulo.includes('sexto') ||
-        capitulo.includes('séptimo') || capitulo.includes('octavo') ||
-        capitulo.includes('noveno') || capitulo.includes('décimo')) {
-      return capitulo.replace('Capítulo ', '');
+    // Extraer el ordinal del formato "Capítulo primero - Descripción" o "Capítulo primero"
+    const match = capitulo.match(/Capítulo\s+(primero|segundo|tercero|cuarto|quinto|sexto|séptimo|octavo|noveno|décimo)/i);
+    if (match) {
+      return match[1];
     }
     
     // Si viene con número, convertirlo
-    const match = capitulo.match(/\d+/);
-    if (match) {
-      return numberToOrdinal(parseInt(match[0]));
+    const numMatch = capitulo.match(/Capítulo\s+(\d+)/);
+    if (numMatch) {
+      return numberToOrdinal(parseInt(numMatch[1]));
     }
     
     return capitulo;
+  };
+
+  const getCapituloNombre = (capitulo: string): string | null => {
+    // Extraer el nombre descriptivo si existe: "Capítulo primero - Descripción"
+    const match = capitulo.match(/Capítulo\s+\w+\s*-\s*(.+)/);
+    return match ? match[1] : null;
   };
 
   const toggleTitle = async (numero: number) => {
@@ -249,8 +252,15 @@ export default function Sidebar({ titulos }: SidebarProps) {
                           <div key={index} className="mb-2">
                             {/* Mostrar Capítulo si existe */}
                             {group.capitulo && (
-                              <div className="px-4 py-1 text-xs font-semibold text-gray-700">
-                                Capítulo {getCapituloOrdinal(group.capitulo)}
+                              <div className="px-4 py-1">
+                                <div className="text-xs font-semibold text-gray-700">
+                                  Capítulo {getCapituloOrdinal(group.capitulo)}
+                                </div>
+                                {getCapituloNombre(group.capitulo) && (
+                                  <div className="text-xs text-gray-500 italic">
+                                    {getCapituloNombre(group.capitulo)}
+                                  </div>
+                                )}
                               </div>
                             )}
                             

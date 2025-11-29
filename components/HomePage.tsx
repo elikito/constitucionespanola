@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import SearchBar, { SearchResult } from './SearchBar';
-import ArticleCard from './ArticleCard';
+import Link from 'next/link';
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,12 +16,28 @@ export default function HomePage() {
   const highlightText = (text: string, query: string) => {
     if (!query || query.length < 2) return text;
     
-    const parts = text.split(new RegExp(`(${query})`, 'gi'));
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const parts = text.split(regex);
+    
     return parts.map((part, index) => 
-      part.toLowerCase() === query.toLowerCase() 
-        ? <mark key={index} className="bg-yellow-300 font-semibold">{part}</mark>
+      regex.test(part) 
+        ? <mark key={index} className="bg-yellow-300 font-semibold px-1 rounded">{part}</mark>
         : part
     );
+  };
+
+  const getArticleTitle = (numero: number) => {
+    if (numero >= 201 && numero <= 204) {
+      return `Disposición Adicional ${numero - 200}ª`;
+    } else if (numero >= 211 && numero <= 219) {
+      return `Disposición Transitoria ${numero - 210}ª`;
+    } else if (numero === 220) {
+      return 'Disposición Derogatoria';
+    } else if (numero === 221) {
+      return 'Disposición Final';
+    } else {
+      return `Artículo ${numero}`;
+    }
   };
 
   return (
@@ -48,28 +64,62 @@ export default function HomePage() {
         {/* Search Results */}
         {searchQuery && searchResults.length > 0 && (
           <div className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Resultados para &quot;{searchQuery}&quot; ({searchResults.length})
-            </h2>
-            <div className="space-y-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold text-gray-800">
+                {searchResults.length} resultado{searchResults.length !== 1 ? 's' : ''}
+              </h2>
+              <div className="text-sm text-gray-500">
+                {searchResults.length} en enunciados
+              </div>
+            </div>
+            
+            <div className="space-y-3">
               {searchResults.map((result) => (
-                <div key={result.numero_articulo}>
-                  <ArticleCard
-                    numero={result.numero_articulo}
-                    texto={result.texto}
-                    explicacion_sencilla={result.explicacion_sencilla}
-                    titulo={result.titulo}
-                    capitulo={result.capitulo}
-                    urlBoe={`https://www.boe.es/buscar/act.php?id=BOE-A-1978-31229&p=20240217&tn=1#a${result.numero_articulo}`}
-                  />
-                  {/* Highlight search term in text */}
-                  <div className="mt-2 p-4 bg-yellow-50 rounded border-l-4 border-yellow-400">
-                    <p className="text-sm text-gray-700">
-                      {highlightText(result.texto.substring(0, 300), searchQuery)}
-                      {result.texto.length > 300 && '...'}
+                <Link
+                  key={result.numero_articulo}
+                  href={`/articulo/${result.numero_articulo}`}
+                  className="block bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                >
+                  {/* Tags */}
+                  <div className="flex gap-2 mb-3">
+                    {result.titulo && (
+                      <span className="inline-block px-3 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded">
+                        {result.titulo}
+                      </span>
+                    )}
+                    {result.capitulo && (
+                      <span className="inline-block px-3 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">
+                        {result.capitulo}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Article Title with highlight badge */}
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="text-base font-semibold text-gray-900">
+                      {getArticleTitle(result.numero_articulo)}
+                    </h3>
+                    <span className="ml-2 px-2 py-1 text-xs bg-yellow-200 text-yellow-900 rounded flex-shrink-0">
+                      💡 Coincidencia en enunciado
+                    </span>
+                  </div>
+
+                  {/* Highlighted Text */}
+                  <div className="text-sm text-gray-700 leading-relaxed">
+                    <p className="line-clamp-3">
+                      {highlightText(result.texto, searchQuery)}
                     </p>
                   </div>
-                </div>
+
+                  {/* Explanation if exists */}
+                  {result.explicacion_sencilla && (
+                    <div className="mt-3 pt-3 border-t border-gray-100">
+                      <p className="text-xs text-gray-600 italic line-clamp-2">
+                        💡 {result.explicacion_sencilla}
+                      </p>
+                    </div>
+                  )}
+                </Link>
               ))}
             </div>
           </div>

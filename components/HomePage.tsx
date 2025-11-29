@@ -136,55 +136,6 @@ export default function HomePage() {
         {/* Structure Overview - Solo mostrar si no hay búsqueda */}
         {!searchQuery && (
           <>
-            {/* Structure Overview */}
-            <div className="bg-white rounded-lg shadow-md p-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                Estructura de la Constitución
-              </h2>
-              
-              <div className="space-y-4">
-                <div className="border-l-4 border-blue-600 pl-4">
-                  <h3 className="font-semibold text-lg text-gray-800">Preámbulo</h3>
-                  <p className="text-gray-600 text-sm">Declaración de principios e intenciones</p>
-                </div>
-
-                <div className="border-l-4 border-blue-600 pl-4">
-                  <h3 className="font-semibold text-lg text-gray-800">Título Preliminar</h3>
-                  <p className="text-gray-600 text-sm">Artículos 1-9</p>
-                </div>
-
-                <div className="border-l-4 border-blue-600 pl-4">
-                  <h3 className="font-semibold text-lg text-gray-800">Título I</h3>
-                  <p className="text-gray-600 text-sm">De los derechos y deberes fundamentales (Art. 10-55)</p>
-                </div>
-
-                <div className="border-l-4 border-blue-600 pl-4">
-                  <h3 className="font-semibold text-lg text-gray-800">Título II</h3>
-                  <p className="text-gray-600 text-sm">De la Corona (Art. 56-65)</p>
-                </div>
-
-                <div className="border-l-4 border-blue-600 pl-4">
-                  <h3 className="font-semibold text-lg text-gray-800">Título III</h3>
-                  <p className="text-gray-600 text-sm">De las Cortes Generales (Art. 66-96)</p>
-                </div>
-
-                <div className="border-l-4 border-blue-600 pl-4">
-                  <h3 className="font-semibold text-lg text-gray-800">Título IV</h3>
-                  <p className="text-gray-600 text-sm">Del Gobierno y de la Administración (Art. 97-107)</p>
-                </div>
-
-                <div className="border-l-4 border-blue-600 pl-4">
-                  <h3 className="font-semibold text-lg text-gray-800">Títulos V-X</h3>
-                  <p className="text-gray-600 text-sm">Relaciones Gobierno-Cortes, Poder Judicial, Economía, etc. (Art. 108-169)</p>
-                </div>
-
-                <div className="border-l-4 border-blue-600 pl-4">
-                  <h3 className="font-semibold text-lg text-gray-800">Disposiciones</h3>
-                  <p className="text-gray-600 text-sm">Adicionales, transitorias, derogatoria y final</p>
-                </div>
-              </div>
-            </div>
-
             {/* Info Box */}
             <div className="mt-8 bg-blue-50 border-l-4 border-blue-600 p-6 rounded">
               <h3 className="font-semibold text-blue-900 mb-2">

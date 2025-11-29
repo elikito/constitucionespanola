@@ -4,6 +4,7 @@ import Link from 'next/link';
 interface ArticleCardProps {
   numero: number;
   texto: string;
+  explicacion_sencilla?: string;
   titulo?: string;
   seccion?: string;
   capitulo?: string;
@@ -13,6 +14,7 @@ interface ArticleCardProps {
 export default function ArticleCard({ 
   numero, 
   texto, 
+  explicacion_sencilla,
   titulo, 
   seccion, 
   capitulo, 
@@ -61,7 +63,20 @@ export default function ArticleCard({
         </a>
       </div>
 
+      {explicacion_sencilla && (
+        <div className="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
+          <h3 className="text-lg font-semibold text-blue-900 mb-2 flex items-center">
+            <span className="mr-2">💡</span>
+            Explicación Sencilla
+          </h3>
+          <p className="text-gray-700 leading-relaxed">
+            {explicacion_sencilla}
+          </p>
+        </div>
+      )}
+
       <div className="prose prose-lg max-w-none">
+        <h3 className="text-lg font-semibold text-gray-900 mb-3">Texto oficial</h3>
         <p className="text-gray-800 leading-relaxed whitespace-pre-line">
           {texto}
         </p>

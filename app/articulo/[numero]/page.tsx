@@ -86,6 +86,7 @@ export default async function ArticlePage({ params }: PageProps) {
             <ArticleCard
               numero={article.numero_articulo}
               texto={article.texto}
+              explicacion_sencilla={article.explicacion_sencilla}
               titulo={article.titulo}
               seccion={article.seccion}
               capitulo={article.capitulo}

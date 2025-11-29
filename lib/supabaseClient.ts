@@ -13,6 +13,7 @@ export interface Article {
   seccion?: string;
   capitulo?: string;
   texto: string;
+  explicacion_sencilla?: string;
   url_boe: string;
   created_at?: string;
 }

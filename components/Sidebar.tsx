@@ -20,6 +20,8 @@ interface Chapter {
 interface Article {
   numero_articulo: number;
   titulo?: string;
+  capitulo?: string;
+  seccion?: string;
 }
 
 interface SidebarProps {
@@ -90,7 +92,7 @@ export default function Sidebar({ titulos }: SidebarProps) {
     
     const { data, error } = await supabase
       .from('articulos')
-      .select('numero_articulo, titulo')
+      .select('numero_articulo, titulo, capitulo, seccion')
       .eq('titulo', tituloName)
       .order('numero_articulo', { ascending: true });
 
@@ -99,6 +101,36 @@ export default function Sidebar({ titulos }: SidebarProps) {
     }
     
     setLoadingArticles(prev => ({ ...prev, [numero]: false }));
+  };
+
+  // Construir jerarquía de capítulos y secciones
+  const buildHierarchy = (articles: Article[]) => {
+    const hierarchy: {
+      [capitulo: string]: {
+        articles: Article[];
+        secciones: { [seccion: string]: Article[] };
+      };
+    } = {};
+
+    articles.forEach(article => {
+      const cap = article.capitulo || 'Sin capítulo';
+      const sec = article.seccion || '';
+
+      if (!hierarchy[cap]) {
+        hierarchy[cap] = { articles: [], secciones: {} };
+      }
+
+      if (sec) {
+        if (!hierarchy[cap].secciones[sec]) {
+          hierarchy[cap].secciones[sec] = [];
+        }
+        hierarchy[cap].secciones[sec].push(article);
+      } else {
+        hierarchy[cap].articles.push(article);
+      }
+    });
+
+    return hierarchy;
   };
 
   const toggleTitle = async (numero: number) => {
@@ -190,17 +222,53 @@ export default function Sidebar({ titulos }: SidebarProps) {
                     >
                       {tituloArticles[titulo.numero].length} artículos →
                     </Link>
-                    <div className="max-h-60 overflow-y-auto">
-                      {tituloArticles[titulo.numero].map((article) => (
-                        <Link
-                          key={article.numero_articulo}
-                          href={`/articulo/${article.numero_articulo}`}
-                          className="block px-4 py-2 text-sm hover:bg-blue-50 rounded-lg transition text-gray-700"
-                          onClick={() => isMobile && setIsOpen(false)}
-                        >
-                          Artículo {article.numero_articulo}
-                        </Link>
-                      ))}
+                    <div className="max-h-96 overflow-y-auto">
+                      {(() => {
+                        const hierarchy = buildHierarchy(tituloArticles[titulo.numero]);
+                        return Object.entries(hierarchy).map(([capitulo, capData]) => {
+                          const capNum = capitulo.replace('Capítulo ', '').trim();
+                          return (
+                            <div key={capitulo} className="mb-3">
+                              {capitulo !== 'Sin capítulo' && (
+                                <div className="px-4 py-1 text-xs font-semibold text-gray-700">
+                                  Capítulo {numberToOrdinal(parseInt(capNum) || 0)}
+                                </div>
+                              )}
+                              
+                              {Object.keys(capData.secciones).length > 0 ? (
+                                Object.entries(capData.secciones).map(([seccion, articles]) => (
+                                <div key={seccion} className="ml-2">
+                                  <div className="px-4 py-1 text-xs text-gray-600">
+                                    {seccion}
+                                  </div>
+                                  {articles.map((article) => (
+                                    <Link
+                                      key={article.numero_articulo}
+                                      href={`/articulo/${article.numero_articulo}`}
+                                      className="block px-4 py-1.5 text-sm hover:bg-blue-50 rounded transition text-gray-700 ml-2"
+                                      onClick={() => isMobile && setIsOpen(false)}
+                                    >
+                                      Artículo {article.numero_articulo}
+                                    </Link>
+                                  ))}
+                                </div>
+                              ))
+                            ) : (
+                              capData.articles.map((article) => (
+                                <Link
+                                  key={article.numero_articulo}
+                                  href={`/articulo/${article.numero_articulo}`}
+                                  className="block px-4 py-1.5 text-sm hover:bg-blue-50 rounded transition text-gray-700"
+                                  onClick={() => isMobile && setIsOpen(false)}
+                                >
+                                  Artículo {article.numero_articulo}
+                                </Link>
+                              ))
+                            )}
+                          </div>
+                        );
+                        });
+                      })()}
                     </div>
                   </>
                 ) : null}

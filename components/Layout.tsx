@@ -48,7 +48,7 @@ export default function Layout({ children }: LayoutProps) {
             
             <div>
               <h3 className="font-bold text-lg mb-3">Proyecto</h3>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-400 text-sm mb-2">
                 Código abierto en{' '}
                 <a 
                   href="https://github.com/elikito/constitucionespanola"
@@ -59,11 +59,19 @@ export default function Layout({ children }: LayoutProps) {
                   GitHub
                 </a>
               </p>
+              <p className="text-gray-400 text-sm">
+                Creado por <span className="text-blue-400 font-semibold">Elias K</span>
+              </p>
+              <p className="text-gray-500 text-xs mt-2">
+                Versión v11.29p
+              </p>
             </div>
           </div>
           
-          <div className="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400 text-sm">
-            <p>© {new Date().getFullYear()} - Constitución Española 1978</p>
+          <div className="mt-8 pt-8 border-t border-gray-700 text-center">
+            <p className="text-gray-400 text-sm">
+              © {new Date().getFullYear()} - Constitución Española 1978 • Creado por Elias K
+            </p>
           </div>
         </div>
       </footer>

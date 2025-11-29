@@ -94,27 +94,20 @@ export default function HomePage() {
                     )}
                   </div>
 
-                  {/* Article Title with highlight badge */}
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-base font-semibold text-gray-900">
-                      {getArticleTitle(result.numero_articulo)}
-                    </h3>
-                    <span className="ml-2 px-2 py-1 text-xs bg-yellow-200 text-yellow-900 rounded flex-shrink-0">
-                      💡 Coincidencia en enunciado
-                    </span>
-                  </div>
+                  {/* Article Title */}
+                  <h3 className="text-base font-semibold text-gray-900 mb-3">
+                    {getArticleTitle(result.numero_articulo)}
+                  </h3>
 
-                  {/* Highlighted Text */}
-                  <div className="text-sm text-gray-700 leading-relaxed">
-                    <p className="line-clamp-3">
-                      {highlightText(result.texto, searchQuery)}
-                    </p>
+                  {/* Highlighted Text - Full article with line breaks */}
+                  <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+                    {highlightText(result.texto, searchQuery)}
                   </div>
 
                   {/* Explanation if exists */}
                   {result.explicacion_sencilla && (
                     <div className="mt-3 pt-3 border-t border-gray-100">
-                      <p className="text-xs text-gray-600 italic line-clamp-2">
+                      <p className="text-xs text-gray-600 italic">
                         💡 {result.explicacion_sencilla}
                       </p>
                     </div>

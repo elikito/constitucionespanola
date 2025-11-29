@@ -51,15 +51,15 @@ export default function HomePage() {
         <div className="text-center mb-8">
           <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
             <span className="flex items-center">
-              <span className="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+              <span className="w-2 h-2 bg-blue-600"></span>
               31 de octubre de 1978: Aprobación por las Cortes
             </span>
             <span className="flex items-center">
-              <span className="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+              <span className="w-2 h-2 bg-blue-600"></span>
               6 de diciembre de 1978: Referéndum
             </span>
             <span className="flex items-center">
-              <span className="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+              <span className="w-2 h-2 bg-blue-600"></span>
               29 de diciembre de 1978: Entrada en vigor
             </span>
           </div>

@@ -8,6 +8,7 @@ interface ArticleCardProps {
   seccion?: string;
   capitulo?: string;
   urlBoe: string;
+  showExplanation?: boolean;
 }
 
 export default function ArticleCard({ 
@@ -17,7 +18,8 @@ export default function ArticleCard({
   titulo, 
   seccion, 
   capitulo, 
-  urlBoe 
+  urlBoe,
+  showExplanation = true
 }: ArticleCardProps) {
   // Determinar el tipo de entrada según el número
   const getTitle = () => {
@@ -63,7 +65,7 @@ export default function ArticleCard({
         </a>
       </div>
 
-      {explicacion_sencilla && (
+      {explicacion_sencilla && showExplanation && (
         <div className="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
           <h3 className="text-lg font-semibold text-blue-900 mb-2 flex items-center">
             <span className="mr-2">💡</span>

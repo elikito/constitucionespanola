@@ -1,22 +1,16 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import Sidebar from '@/components/Sidebar';
 import ArticleCard from '@/components/ArticleCard';
 import { supabase } from '@/lib/supabaseClient';
 import type { Article } from '@/lib/supabaseClient';
-import { Metadata } from 'next';
 
 interface PageProps {
   params: Promise<{
     tituloNum: string;
   }>;
-}
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { tituloNum } = await params;
-  return {
-    title: `Título ${tituloNum} - Constitución Española`,
-    description: `Consulta los artículos del Título ${tituloNum} de la Constitución Española`,
-  };
 }
 
 function numberToRoman(num: number): string {
@@ -86,11 +80,31 @@ async function getTituloName(tituloNum: string) {
   return data.nombre;
 }
 
-export default async function TituloPage({ params }: PageProps) {
-  const { tituloNum } = await params;
-  const articles = await getArticlesByTitle(tituloNum);
-  const titulos = await getTitulos();
-  const tituloName = await getTituloName(tituloNum);
+export default function TituloPage({ params }: PageProps) {
+  const [tituloNum, setTituloNum] = useState<string>('');
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [titulos, setTitulos] = useState<any[]>([]);
+  const [tituloName, setTituloName] = useState<string>('');
+  const [showExplanations, setShowExplanations] = useState<boolean>(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const resolvedParams = await params;
+      setTituloNum(resolvedParams.tituloNum);
+      
+      const [articlesData, titulosData, nameData] = await Promise.all([
+        getArticlesByTitle(resolvedParams.tituloNum),
+        getTitulos(),
+        getTituloName(resolvedParams.tituloNum)
+      ]);
+      
+      setArticles(articlesData);
+      setTitulos(titulosData);
+      setTituloName(nameData);
+    };
+    
+    loadData();
+  }, [params]);
 
   return (
     <Layout>
@@ -111,9 +125,20 @@ export default async function TituloPage({ params }: PageProps) {
               <h2 className="text-xl text-gray-700 mb-4">
                 {tituloName}
               </h2>
-              <p className="text-gray-600">
-                {articles.length} artículo{articles.length !== 1 ? 's' : ''}
-              </p>
+              <div className="flex items-center justify-between">
+                <p className="text-gray-600">
+                  {articles.length} artículo{articles.length !== 1 ? 's' : ''}
+                </p>
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={showExplanations}
+                    onChange={(e) => setShowExplanations(e.target.checked)}
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <span className="text-sm text-gray-700">Mostrar explicaciones sencillas</span>
+                </label>
+              </div>
             </div>
 
             <div className="space-y-6">
@@ -129,10 +154,12 @@ export default async function TituloPage({ params }: PageProps) {
                     key={article.id}
                     numero={article.numero_articulo}
                     texto={article.texto}
+                    explicacion_sencilla={article.explicacion_sencilla}
                     titulo={article.titulo}
                     seccion={article.seccion}
                     capitulo={article.capitulo}
                     urlBoe={article.url_boe}
+                    showExplanation={showExplanations}
                   />
                 ))
               )}

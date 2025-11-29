@@ -48,6 +48,20 @@ export default async function PreambulePage() {
                 </a>
               </div>
 
+              <div className="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
+                <h3 className="text-lg font-semibold text-blue-900 mb-2 flex items-center">
+                  <span className="mr-2">💡</span>
+                  Explicación Sencilla
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  El Preámbulo es la introducción de la Constitución. Explica por qué se crea 
+                  (establecer justicia, libertad y seguridad) y qué objetivos persigue: garantizar 
+                  la democracia, proteger los derechos humanos, promover la cultura y economía, 
+                  y colaborar con otros países. Es como la declaración de intenciones del pueblo 
+                  español al aprobar esta Constitución.
+                </p>
+              </div>
+
               <div className="prose prose-lg max-w-none">
                 <p className="text-gray-800 leading-relaxed mb-4">
                   La Nación española, deseando establecer la justicia, la libertad y la seguridad 
@@ -82,11 +96,7 @@ export default async function PreambulePage() {
                 </ul>
 
                 <p className="text-gray-800 leading-relaxed mt-4">
-                  En consecuencia, las Cortes aprueban y el pueblo español ratifica la siguiente
-                </p>
-                
-                <p className="text-center font-bold text-xl text-blue-900 mt-6">
-                  CONSTITUCIÓN
+                  En consecuencia, las Cortes aprueban y el pueblo español ratifica la siguiente CONSTITUCIÓN:
                 </p>
               </div>
             </article>

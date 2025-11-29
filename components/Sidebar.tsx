@@ -135,10 +135,21 @@ export default function Sidebar({ titulos }: SidebarProps) {
   };
 
   const getCapituloOrdinal = (capitulo: string): string => {
+    // Si ya viene con ordinal (primero, segundo...), devolverlo tal cual
+    if (capitulo.includes('primero') || capitulo.includes('segundo') || 
+        capitulo.includes('tercero') || capitulo.includes('cuarto') || 
+        capitulo.includes('quinto') || capitulo.includes('sexto') ||
+        capitulo.includes('séptimo') || capitulo.includes('octavo') ||
+        capitulo.includes('noveno') || capitulo.includes('décimo')) {
+      return capitulo.replace('Capítulo ', '');
+    }
+    
+    // Si viene con número, convertirlo
     const match = capitulo.match(/\d+/);
     if (match) {
       return numberToOrdinal(parseInt(match[0]));
     }
+    
     return capitulo;
   };
 

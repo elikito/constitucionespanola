@@ -55,6 +55,14 @@ export default function Sidebar({ titulos }: SidebarProps) {
     return result;
   };
 
+  const numberToOrdinal = (num: number): string => {
+    const ordinals: { [key: number]: string } = {
+      1: 'primero', 2: 'segundo', 3: 'tercero', 4: 'cuarto', 5: 'quinto',
+      6: 'sexto', 7: 'séptimo', 8: 'octavo', 9: 'noveno', 10: 'décimo'
+    };
+    return ordinals[num] || `${num}º`;
+  };
+
   const getArticleRange = (tituloNum: number): string => {
     const ranges: { [key: number]: string } = {
       0: 'a.1-9',
@@ -161,7 +169,7 @@ export default function Sidebar({ titulos }: SidebarProps) {
                     onClick={() => isMobile && setIsOpen(false)}
                   >
                     {capitulo.seccion && `${capitulo.seccion} - `}
-                    Capítulo {capitulo.numero}: {capitulo.nombre}
+                    Capítulo {numberToOrdinal(capitulo.numero)}: {capitulo.nombre}
                   </Link>
                 ))}
               </div>

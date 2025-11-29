@@ -36,6 +36,15 @@ export default function ArticleCard({
     }
   };
 
+  const numberToOrdinal = (num: string): string => {
+    const numInt = parseInt(num);
+    const ordinals: { [key: number]: string } = {
+      1: 'primero', 2: 'segundo', 3: 'tercero', 4: 'cuarto', 5: 'quinto',
+      6: 'sexto', 7: 'séptimo', 8: 'octavo', 9: 'noveno', 10: 'décimo'
+    };
+    return ordinals[numInt] || num;
+  };
+
   return (
     <article className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
       <div className="flex items-start justify-between mb-4">
@@ -47,7 +56,7 @@ export default function ArticleCard({
             <div className="text-base text-gray-400">
               {titulo && titulo}
               {titulo && capitulo && ' - '}
-              {capitulo && capitulo}
+              {capitulo && `Capítulo ${numberToOrdinal(capitulo)}`}
               {seccion && ` - ${seccion}`}
             </div>
           )}

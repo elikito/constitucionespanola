@@ -25,6 +25,15 @@ export default function SearchBar({ onSearch, showDropdown = true }: SearchBarPr
   const router = useRouter();
   const searchRef = useRef<HTMLDivElement>(null);
 
+  const numberToOrdinal = (num: string): string => {
+    const numInt = parseInt(num);
+    const ordinals: { [key: number]: string } = {
+      1: 'primero', 2: 'segundo', 3: 'tercero', 4: 'cuarto', 5: 'quinto',
+      6: 'sexto', 7: 'séptimo', 8: 'octavo', 9: 'noveno', 10: 'décimo'
+    };
+    return ordinals[numInt] || num;
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -113,7 +122,7 @@ export default function SearchBar({ onSearch, showDropdown = true }: SearchBarPr
                 <div className="text-sm text-gray-600 mt-1">
                   {result.titulo && `Título ${result.titulo}`}
                   {result.titulo && result.capitulo && ' - '}
-                  {result.capitulo && `Capítulo ${result.capitulo}`}
+                  {result.capitulo && `Capítulo ${numberToOrdinal(result.capitulo)}`}
                 </div>
               )}
               <div className="text-sm text-gray-700 mt-1 line-clamp-2">

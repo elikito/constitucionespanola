@@ -113,18 +113,9 @@ export default function TituloPage({ params }: PageProps) {
         <div className="flex-1 px-4 md:px-8 py-8">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
-              <nav className="text-sm text-gray-600 mb-4">
-                <a href="/" className="hover:text-blue-600">Inicio</a>
-                {' / '}
-                {tituloNum === '0' ? 'Título Preliminar' : `Título ${tituloNum}`}
-              </nav>
-              
-              <h1 className="text-3xl font-bold text-blue-900 mb-2">
-                {tituloNum === '0' ? 'Título Preliminar' : `Título ${tituloNum}`}
+              <h1 className="text-3xl font-bold text-blue-900 mb-4">
+                {tituloNum === '0' ? 'Título Preliminar' : `Título ${numberToRoman(parseInt(tituloNum))}`} - {tituloName}
               </h1>
-              <h2 className="text-xl text-gray-700 mb-4">
-                {tituloName}
-              </h2>
               <div className="flex items-center justify-between">
                 <p className="text-gray-600">
                   {articles.length} artículo{articles.length !== 1 ? 's' : ''}

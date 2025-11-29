@@ -44,7 +44,7 @@ export default function ArticleCard({
             {getTitle()}
           </h2>
           {(titulo || capitulo) && numero < 200 && (
-            <div className="text-sm text-gray-600">
+            <div className="text-base text-gray-700">
               {titulo && titulo}
               {titulo && capitulo && ' - '}
               {capitulo && `Capítulo ${capitulo}`}

@@ -55,12 +55,6 @@ export default async function DisposicionesPage() {
         <div className="flex-1 px-4 md:px-8 py-8">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
-              <nav className="text-sm text-gray-600 mb-4">
-                <a href="/" className="hover:text-blue-600">Inicio</a>
-                {' / '}
-                Disposiciones
-              </nav>
-              
               <h1 className="text-3xl font-bold text-blue-900 mb-2">
                 Disposiciones
               </h1>
@@ -72,7 +66,7 @@ export default async function DisposicionesPage() {
             {adicionales.length > 0 && (
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                  Disposiciones Adicionales
+                  Adicionales
                 </h2>
                 <div className="space-y-6">
                   {adicionales.map((disp) => (
@@ -91,7 +85,7 @@ export default async function DisposicionesPage() {
             {transitorias.length > 0 && (
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                  Disposiciones Transitorias
+                  Transitorias
                 </h2>
                 <div className="space-y-6">
                   {transitorias.map((disp) => (
@@ -110,7 +104,7 @@ export default async function DisposicionesPage() {
             {derogatoria.length > 0 && (
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                  Disposición Derogatoria
+                  Derogatoria
                 </h2>
                 <div className="space-y-6">
                   {derogatoria.map((disp) => (
@@ -129,7 +123,7 @@ export default async function DisposicionesPage() {
             {final.length > 0 && (
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                  Disposición Final
+                  Final
                 </h2>
                 <div className="space-y-6">
                   {final.map((disp) => (

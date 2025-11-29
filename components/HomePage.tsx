@@ -45,31 +45,60 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex-1 px-4 md:px-8 py-8">
-      {/* Hero Section */}
-      <div className="max-w-4xl mx-auto mb-12">
-        {/* Search Bar */}
-        <div className="mb-8">
-          <SearchBar onSearch={handleSearch} showDropdown={false} />
-        </div>
+    <div className="flex-1 flex flex-col">
+      {/* Centered Search Section */}
+      {!searchQuery ? (
+        <div className="flex-1 flex items-center justify-center px-4 md:px-8">
+          <div className="max-w-4xl w-full">
+            {/* Search Bar */}
+            <div id="search-section" className="mb-8">
+              <SearchBar onSearch={handleSearch} showDropdown={false} />
+            </div>
 
-        {/* Timeline */}
-        <div className="text-center mb-8">
-          <div className="flex flex-col md:flex-row md:flex-wrap justify-center gap-3 md:gap-4 text-xs md:text-sm text-gray-600">
-            <span className="flex items-center justify-center gap-2">
-              <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></span>
-              <span>31 de octubre de 1978: Aprobación por las Cortes</span>
-            </span>
-            <span className="flex items-center justify-center gap-2">
-              <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></span>
-              <span>6 de diciembre de 1978: Referéndum</span>
-            </span>
-            <span className="flex items-center justify-center gap-2">
-              <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></span>
-              <span>29 de diciembre de 1978: Entrada en vigor</span>
-            </span>
+            {/* Timeline */}
+            <div className="text-center">
+              <div className="flex flex-col md:flex-row md:flex-wrap justify-center gap-3 md:gap-4 text-xs md:text-sm text-gray-600">
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></span>
+                  <span>31 de octubre de 1978: Aprobación por las Cortes</span>
+                </span>
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></span>
+                  <span>6 de diciembre de 1978: Referéndum</span>
+                </span>
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></span>
+                  <span>29 de diciembre de 1978: Entrada en vigor</span>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
+      ) : (
+        <div className="px-4 md:px-8 py-8">
+          <div className="max-w-4xl mx-auto">
+            {/* Search Bar */}
+            <div id="search-section" className="mb-8">
+              <SearchBar onSearch={handleSearch} showDropdown={false} />
+            </div>
+
+            {/* Timeline */}
+            <div className="text-center mb-8">
+              <div className="flex flex-col md:flex-row md:flex-wrap justify-center gap-3 md:gap-4 text-xs md:text-sm text-gray-600">
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></span>
+                  <span>31 de octubre de 1978: Aprobación por las Cortes</span>
+                </span>
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></span>
+                  <span>6 de diciembre de 1978: Referéndum</span>
+                </span>
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></span>
+                  <span>29 de diciembre de 1978: Entrada en vigor</span>
+                </span>
+              </div>
+            </div>
 
         {/* Search Results */}
         {searchQuery && searchResults.length > 0 && (
@@ -125,31 +154,32 @@ export default function HomePage() {
           </div>
         )}
 
-        {searchQuery && searchResults.length === 0 && (
-          <div className="mb-12 text-center p-8 bg-gray-50 rounded-lg">
-            <p className="text-gray-600">
-              No se encontraron resultados para &quot;{searchQuery}&quot;
+            {searchQuery && searchResults.length === 0 && (
+              <div className="mb-12 text-center p-8 bg-gray-50 rounded-lg">
+                <p className="text-gray-600">
+                  No se encontraron resultados para &quot;{searchQuery}&quot;
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Info Box - Always at bottom */}
+      <div className="px-4 md:px-8 pb-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded">
+            <h3 className="font-semibold text-blue-900 mb-2">
+              ℹ️ Sobre esta herramienta
+            </h3>
+            <p className="text-gray-700 text-sm">
+              Esta aplicación permite consultar de forma rápida y sencilla todos los artículos 
+              de la Constitución Española. Cada artículo incluye un enlace directo al texto 
+              oficial publicado en el BOE. Utiliza el buscador o navega por la estructura 
+              jerárquica usando el menú lateral.
             </p>
           </div>
-        )}
-
-        {/* Structure Overview - Solo mostrar si no hay búsqueda */}
-        {!searchQuery && (
-          <>
-            {/* Info Box */}
-            <div className="mt-8 bg-blue-50 border-l-4 border-blue-600 p-6 rounded">
-              <h3 className="font-semibold text-blue-900 mb-2">
-                ℹ️ Sobre esta herramienta
-              </h3>
-              <p className="text-gray-700 text-sm">
-                Esta aplicación permite consultar de forma rápida y sencilla todos los artículos 
-                de la Constitución Española. Cada artículo incluye un enlace directo al texto 
-                oficial publicado en el BOE. Utiliza el buscador o navega por la estructura 
-                jerárquica usando el menú lateral.
-              </p>
-            </div>
-          </>
-        )}
+        </div>
       </div>
     </div>
   );

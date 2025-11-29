@@ -48,26 +48,27 @@ export default function HomePage() {
     <div className="flex-1 px-4 md:px-8 py-8">
       {/* Hero Section */}
       <div className="max-w-4xl mx-auto mb-12">
-        <div className="text-center mb-8">
-          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-            <span className="flex items-center">
-              <span className="w-2 h-2 bg-blue-600"></span>
-              31 de octubre de 1978: Aprobación por las Cortes
-            </span>
-            <span className="flex items-center">
-              <span className="w-2 h-2 bg-blue-600"></span>
-              6 de diciembre de 1978: Referéndum
-            </span>
-            <span className="flex items-center">
-              <span className="w-2 h-2 bg-blue-600"></span>
-              29 de diciembre de 1978: Entrada en vigor
-            </span>
-          </div>
+        {/* Search Bar */}
+        <div className="mb-8">
+          <SearchBar onSearch={handleSearch} showDropdown={false} />
         </div>
 
-        {/* Search Bar */}
-        <div className="mb-12">
-          <SearchBar onSearch={handleSearch} showDropdown={false} />
+        {/* Timeline */}
+        <div className="text-center mb-8">
+          <div className="flex flex-col md:flex-row md:flex-wrap justify-center gap-3 md:gap-4 text-xs md:text-sm text-gray-600">
+            <span className="flex items-center justify-center gap-2">
+              <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></span>
+              <span>31 de octubre de 1978: Aprobación por las Cortes</span>
+            </span>
+            <span className="flex items-center justify-center gap-2">
+              <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></span>
+              <span>6 de diciembre de 1978: Referéndum</span>
+            </span>
+            <span className="flex items-center justify-center gap-2">
+              <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></span>
+              <span>29 de diciembre de 1978: Entrada en vigor</span>
+            </span>
+          </div>
         </div>
 
         {/* Search Results */}

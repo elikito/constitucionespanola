@@ -46,7 +46,7 @@ export default function Sidebar({ titulos }: SidebarProps) {
     <div className="h-full overflow-y-auto bg-gray-50 border-r border-gray-200 p-4">
       <div className="space-y-2">
         <Link 
-          href="/"
+          href="/preambulo"
           className="block px-4 py-2 rounded-lg hover:bg-blue-50 text-blue-900 font-semibold transition"
           onClick={() => isMobile && setIsOpen(false)}
         >
@@ -54,14 +54,14 @@ export default function Sidebar({ titulos }: SidebarProps) {
         </Link>
         
         <Link 
-          href="/titulo-preliminar"
+          href="/titulo/0"
           className="block px-4 py-2 rounded-lg hover:bg-blue-50 text-blue-900 font-semibold transition"
           onClick={() => isMobile && setIsOpen(false)}
         >
           Título Preliminar
         </Link>
 
-        {titulos.map((titulo) => (
+        {titulos.filter(t => t.numero > 0).map((titulo) => (
           <div key={titulo.numero} className="border-b border-gray-200 pb-2">
             <button
               onClick={() => toggleTitle(titulo.numero)}
@@ -77,7 +77,7 @@ export default function Sidebar({ titulos }: SidebarProps) {
               )}
             </button>
             
-            {expandedTitles.has(titulo.numero) && titulo.capitulos && (
+            {expandedTitles.has(titulo.numero) && titulo.capitulos && titulo.capitulos.length > 0 && (
               <div className="ml-4 mt-2 space-y-1">
                 {titulo.capitulos.map((capitulo) => (
                   <Link
@@ -90,6 +90,18 @@ export default function Sidebar({ titulos }: SidebarProps) {
                     Capítulo {capitulo.numero}: {capitulo.nombre}
                   </Link>
                 ))}
+              </div>
+            )}
+            
+            {expandedTitles.has(titulo.numero) && (!titulo.capitulos || titulo.capitulos.length === 0) && (
+              <div className="ml-4 mt-2">
+                <Link
+                  href={`/titulo/${titulo.numero}`}
+                  className="block px-4 py-2 text-sm hover:bg-blue-50 rounded-lg transition text-gray-700"
+                  onClick={() => isMobile && setIsOpen(false)}
+                >
+                  Ver artículos →
+                </Link>
               </div>
             )}
           </div>

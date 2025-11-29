@@ -17,36 +17,28 @@ export async function GET(request: NextRequest) {
       const articleNumber = parseInt(query.trim());
       const { data, error } = await supabase
         .from('articulos')
-        .select('numero_articulo, titulo, capitulo, texto')
+        .select('numero_articulo, titulo, capitulo, texto, url_boe')
         .eq('numero_articulo', articleNumber)
         .limit(1);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error searching by number:', error);
+        return NextResponse.json({ results: [] });
+      }
       
       return NextResponse.json({ results: data || [] });
     }
 
-    // Buscar por texto usando Full Text Search de Supabase
+    // Buscar por texto usando ILIKE (más compatible)
     const { data, error } = await supabase
       .from('articulos')
-      .select('numero_articulo, titulo, capitulo, texto')
-      .textSearch('texto', query, {
-        type: 'websearch',
-        config: 'spanish'
-      })
+      .select('numero_articulo, titulo, capitulo, texto, url_boe')
+      .ilike('texto', `%${query}%`)
       .limit(10);
 
     if (error) {
-      // Si falla el Full Text Search, hacer búsqueda con ILIKE
-      const { data: fallbackData, error: fallbackError } = await supabase
-        .from('articulos')
-        .select('numero_articulo, titulo, capitulo, texto')
-        .ilike('texto', `%${query}%`)
-        .limit(10);
-
-      if (fallbackError) throw fallbackError;
-      
-      return NextResponse.json({ results: fallbackData || [] });
+      console.error('Error searching:', error);
+      return NextResponse.json({ results: [] });
     }
 
     return NextResponse.json({ results: data || [] });

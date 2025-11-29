@@ -62,7 +62,7 @@ export default async function Home() {
               </Link>
 
               <Link 
-                href="/titulo-preliminar"
+                href="/titulo/0"
                 className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition group"
               >
                 <div className="flex items-center mb-3">

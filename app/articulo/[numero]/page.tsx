@@ -35,14 +35,17 @@ async function getArticle(numero: number): Promise<Article | null> {
 }
 
 async function getTitulos() {
-  // En producción, esto vendría de Supabase
-  return [
-    {
-      numero: 1,
-      nombre: 'De los derechos y deberes fundamentales',
-      capitulos: []
-    }
-  ];
+  const { data, error } = await supabase
+    .from('titulos')
+    .select('*')
+    .order('numero', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching titles:', error);
+    return [];
+  }
+
+  return data || [];
 }
 
 export default async function ArticlePage({ params }: PageProps) {

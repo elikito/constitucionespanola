@@ -37,13 +37,17 @@ async function getArticlesByChapter(tituloNum: string, capituloNum: string): Pro
 }
 
 async function getTitulos() {
-  return [
-    {
-      numero: 1,
-      nombre: 'De los derechos y deberes fundamentales',
-      capitulos: []
-    }
-  ];
+  const { data, error } = await supabase
+    .from('titulos')
+    .select('*')
+    .order('numero', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching titles:', error);
+    return [];
+  }
+
+  return data || [];
 }
 
 export default async function ChapterPage({ params }: PageProps) {

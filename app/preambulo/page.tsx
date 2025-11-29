@@ -1,15 +1,20 @@
 import Layout from '@/components/Layout';
 import Sidebar from '@/components/Sidebar';
 import { ExternalLink } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
 
 async function getTitulos() {
-  return [
-    {
-      numero: 1,
-      nombre: 'De los derechos y deberes fundamentales',
-      capitulos: []
-    }
-  ];
+  const { data, error } = await supabase
+    .from('titulos')
+    .select('*')
+    .order('numero', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching titles:', error);
+    return [];
+  }
+
+  return data || [];
 }
 
 export const metadata = {

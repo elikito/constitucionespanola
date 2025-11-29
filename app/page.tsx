@@ -3,26 +3,24 @@ import SearchBar from '@/components/SearchBar';
 import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 import { BookOpen, Scale, FileText } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
 
-// Datos de ejemplo - esto se conectará a Supabase más adelante
-const titulos = [
-  {
-    numero: 1,
-    nombre: 'De los derechos y deberes fundamentales',
-    capitulos: [
-      { numero: 1, nombre: 'De los españoles y los extranjeros', seccion: 'Sección 1ª' },
-      { numero: 2, nombre: 'Derechos y libertades', seccion: 'Sección 1ª' },
-    ]
-  },
-  {
-    numero: 2,
-    nombre: 'De la Corona',
-    capitulos: []
-  },
-  // ... más títulos
-];
+async function getTitulos() {
+  const { data, error } = await supabase
+    .from('titulos')
+    .select('*')
+    .order('numero', { ascending: true });
 
-export default function Home() {
+  if (error) {
+    console.error('Error fetching titles:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+export default async function Home() {
+  const titulos = await getTitulos();
   return (
     <Layout>
       <div className="flex">

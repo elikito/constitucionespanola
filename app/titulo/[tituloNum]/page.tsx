@@ -19,13 +19,29 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+function numberToRoman(num: number): string {
+  const romanNumerals: [number, string][] = [
+    [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']
+  ];
+  
+  let result = '';
+  for (const [value, numeral] of romanNumerals) {
+    while (num >= value) {
+      result += numeral;
+      num -= value;
+    }
+  }
+  return result;
+}
+
 async function getArticlesByTitle(tituloNum: string): Promise<Article[]> {
   let tituloName = '';
   
   if (tituloNum === '0') {
     tituloName = 'Título Preliminar';
   } else {
-    tituloName = `Título ${tituloNum}`;
+    const roman = numberToRoman(parseInt(tituloNum));
+    tituloName = `Título ${roman}`;
   }
 
   const { data, error } = await supabase

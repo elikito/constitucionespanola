@@ -1,65 +1,160 @@
-import Image from "next/image";
+import Layout from '@/components/Layout';
+import SearchBar from '@/components/SearchBar';
+import Sidebar from '@/components/Sidebar';
+import Link from 'next/link';
+import { BookOpen, Scale, FileText } from 'lucide-react';
+
+// Datos de ejemplo - esto se conectará a Supabase más adelante
+const titulos = [
+  {
+    numero: 1,
+    nombre: 'De los derechos y deberes fundamentales',
+    capitulos: [
+      { numero: 1, nombre: 'De los españoles y los extranjeros', seccion: 'Sección 1ª' },
+      { numero: 2, nombre: 'Derechos y libertades', seccion: 'Sección 1ª' },
+    ]
+  },
+  {
+    numero: 2,
+    nombre: 'De la Corona',
+    capitulos: []
+  },
+  // ... más títulos
+];
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <Layout>
+      <div className="flex">
+        <Sidebar titulos={titulos} />
+        
+        <div className="flex-1 px-4 md:px-8 py-8">
+          {/* Hero Section */}
+          <div className="max-w-4xl mx-auto mb-12">
+            <div className="text-center mb-8">
+              <h1 className="text-4xl md:text-5xl font-bold text-blue-900 mb-4">
+                Constitución Española
+              </h1>
+              <p className="text-xl text-gray-600 mb-2">
+                27 de diciembre de 1978
+              </p>
+              <p className="text-gray-600">
+                Herramienta de consulta rápida y ligera
+              </p>
+            </div>
+
+            {/* Search Bar */}
+            <div className="mb-12">
+              <SearchBar />
+            </div>
+
+            {/* Quick Access Cards */}
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <Link 
+                href="/preambulo"
+                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition group"
+              >
+                <div className="flex items-center mb-3">
+                  <BookOpen className="w-8 h-8 text-blue-600 mr-3" />
+                  <h3 className="text-lg font-semibold text-gray-800">Preámbulo</h3>
+                </div>
+                <p className="text-gray-600 text-sm">
+                  Introducción y principios fundacionales
+                </p>
+              </Link>
+
+              <Link 
+                href="/titulo-preliminar"
+                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition group"
+              >
+                <div className="flex items-center mb-3">
+                  <Scale className="w-8 h-8 text-blue-600 mr-3" />
+                  <h3 className="text-lg font-semibold text-gray-800">Título Preliminar</h3>
+                </div>
+                <p className="text-gray-600 text-sm">
+                  Artículos 1-9: Fundamentos del Estado
+                </p>
+              </Link>
+
+              <Link 
+                href="/disposiciones"
+                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition group"
+              >
+                <div className="flex items-center mb-3">
+                  <FileText className="w-8 h-8 text-blue-600 mr-3" />
+                  <h3 className="text-lg font-semibold text-gray-800">Disposiciones</h3>
+                </div>
+                <p className="text-gray-600 text-sm">
+                  Adicionales, transitorias y finales
+                </p>
+              </Link>
+            </div>
+
+            {/* Structure Overview */}
+            <div className="bg-white rounded-lg shadow-md p-8">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                Estructura de la Constitución
+              </h2>
+              
+              <div className="space-y-4">
+                <div className="border-l-4 border-blue-600 pl-4">
+                  <h3 className="font-semibold text-lg text-gray-800">Preámbulo</h3>
+                  <p className="text-gray-600 text-sm">Declaración de principios e intenciones</p>
+                </div>
+
+                <div className="border-l-4 border-blue-600 pl-4">
+                  <h3 className="font-semibold text-lg text-gray-800">Título Preliminar</h3>
+                  <p className="text-gray-600 text-sm">Artículos 1-9</p>
+                </div>
+
+                <div className="border-l-4 border-blue-600 pl-4">
+                  <h3 className="font-semibold text-lg text-gray-800">Título I</h3>
+                  <p className="text-gray-600 text-sm">De los derechos y deberes fundamentales (Art. 10-55)</p>
+                </div>
+
+                <div className="border-l-4 border-blue-600 pl-4">
+                  <h3 className="font-semibold text-lg text-gray-800">Título II</h3>
+                  <p className="text-gray-600 text-sm">De la Corona (Art. 56-65)</p>
+                </div>
+
+                <div className="border-l-4 border-blue-600 pl-4">
+                  <h3 className="font-semibold text-lg text-gray-800">Título III</h3>
+                  <p className="text-gray-600 text-sm">De las Cortes Generales (Art. 66-96)</p>
+                </div>
+
+                <div className="border-l-4 border-blue-600 pl-4">
+                  <h3 className="font-semibold text-lg text-gray-800">Título IV</h3>
+                  <p className="text-gray-600 text-sm">Del Gobierno y de la Administración (Art. 97-107)</p>
+                </div>
+
+                <div className="border-l-4 border-blue-600 pl-4">
+                  <h3 className="font-semibold text-lg text-gray-800">Títulos V-X</h3>
+                  <p className="text-gray-600 text-sm">Relaciones Gobierno-Cortes, Poder Judicial, Economía, etc. (Art. 108-169)</p>
+                </div>
+
+                <div className="border-l-4 border-blue-600 pl-4">
+                  <h3 className="font-semibold text-lg text-gray-800">Disposiciones</h3>
+                  <p className="text-gray-600 text-sm">Adicionales, transitorias, derogatoria y final</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Info Box */}
+            <div className="mt-8 bg-blue-50 border-l-4 border-blue-600 p-6 rounded">
+              <h3 className="font-semibold text-blue-900 mb-2">
+                ℹ️ Sobre esta herramienta
+              </h3>
+              <p className="text-gray-700 text-sm">
+                Esta aplicación permite consultar de forma rápida y sencilla todos los artículos 
+                de la Constitución Española. Cada artículo incluye un enlace directo al texto 
+                oficial publicado en el BOE. Utiliza el buscador o navega por la estructura 
+                jerárquica usando el menú lateral.
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </div>
+    </Layout>
   );
 }
+

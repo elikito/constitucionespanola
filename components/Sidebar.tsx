@@ -1,0 +1,139 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { ChevronDown, ChevronRight, Menu, X } from 'lucide-react';
+
+interface Title {
+  numero: number;
+  nombre: string;
+  capitulos?: Chapter[];
+}
+
+interface Chapter {
+  numero: number;
+  nombre: string;
+  seccion?: string;
+}
+
+interface SidebarProps {
+  titulos: Title[];
+}
+
+export default function Sidebar({ titulos }: SidebarProps) {
+  const [expandedTitles, setExpandedTitles] = useState<Set<number>>(new Set());
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const toggleTitle = (numero: number) => {
+    const newExpanded = new Set(expandedTitles);
+    if (newExpanded.has(numero)) {
+      newExpanded.delete(numero);
+    } else {
+      newExpanded.add(numero);
+    }
+    setExpandedTitles(newExpanded);
+  };
+
+  const sidebarContent = (
+    <div className="h-full overflow-y-auto bg-gray-50 border-r border-gray-200 p-4">
+      <div className="space-y-2">
+        <Link 
+          href="/"
+          className="block px-4 py-2 rounded-lg hover:bg-blue-50 text-blue-900 font-semibold transition"
+          onClick={() => isMobile && setIsOpen(false)}
+        >
+          Preámbulo
+        </Link>
+        
+        <Link 
+          href="/titulo-preliminar"
+          className="block px-4 py-2 rounded-lg hover:bg-blue-50 text-blue-900 font-semibold transition"
+          onClick={() => isMobile && setIsOpen(false)}
+        >
+          Título Preliminar
+        </Link>
+
+        {titulos.map((titulo) => (
+          <div key={titulo.numero} className="border-b border-gray-200 pb-2">
+            <button
+              onClick={() => toggleTitle(titulo.numero)}
+              className="w-full flex items-center justify-between px-4 py-2 hover:bg-blue-50 rounded-lg transition"
+            >
+              <span className="font-semibold text-gray-800">
+                Título {titulo.numero}: {titulo.nombre}
+              </span>
+              {expandedTitles.has(titulo.numero) ? (
+                <ChevronDown className="w-5 h-5 text-gray-600" />
+              ) : (
+                <ChevronRight className="w-5 h-5 text-gray-600" />
+              )}
+            </button>
+            
+            {expandedTitles.has(titulo.numero) && titulo.capitulos && (
+              <div className="ml-4 mt-2 space-y-1">
+                {titulo.capitulos.map((capitulo) => (
+                  <Link
+                    key={capitulo.numero}
+                    href={`/titulo/${titulo.numero}/capitulo/${capitulo.numero}`}
+                    className="block px-4 py-2 text-sm hover:bg-blue-50 rounded-lg transition text-gray-700"
+                    onClick={() => isMobile && setIsOpen(false)}
+                  >
+                    {capitulo.seccion && `${capitulo.seccion} - `}
+                    Capítulo {capitulo.numero}: {capitulo.nombre}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+        
+        <Link 
+          href="/disposiciones"
+          className="block px-4 py-2 rounded-lg hover:bg-blue-50 text-blue-900 font-semibold transition"
+          onClick={() => isMobile && setIsOpen(false)}
+        >
+          Disposiciones
+        </Link>
+      </div>
+    </div>
+  );
+
+  if (isMobile) {
+    return (
+      <>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="fixed bottom-4 right-4 z-50 bg-blue-900 text-white p-4 rounded-full shadow-lg hover:bg-blue-800 transition"
+        >
+          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+
+        {isOpen && (
+          <>
+            <div 
+              className="fixed inset-0 bg-black bg-opacity-50 z-40"
+              onClick={() => setIsOpen(false)}
+            />
+            <div className="fixed inset-y-0 left-0 w-80 z-50 bg-white shadow-xl">
+              {sidebarContent}
+            </div>
+          </>
+        )}
+      </>
+    );
+  }
+
+  return (
+    <aside className="w-80 h-[calc(100vh-4rem)] sticky top-16 hidden md:block">
+      {sidebarContent}
+    </aside>
+  );
+}

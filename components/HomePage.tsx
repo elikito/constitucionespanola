@@ -11,6 +11,10 @@ export default function HomePage() {
   const handleSearch = (query: string, results: SearchResult[]) => {
     setSearchQuery(query);
     setSearchResults(results);
+    // Limpiar resultados si el query está vacío
+    if (!query || query.length < 2) {
+      setSearchResults([]);
+    }
   };
 
   const highlightText = (text: string, query: string) => {
@@ -45,15 +49,20 @@ export default function HomePage() {
       {/* Hero Section */}
       <div className="max-w-4xl mx-auto mb-12">
         <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-blue-900 mb-4">
-            Constitución Española
-          </h1>
-          <p className="text-xl text-gray-600 mb-2">
-            27 de diciembre de 1978
-          </p>
-          <p className="text-gray-600">
-            Herramienta de consulta rápida y ligera
-          </p>
+          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+            <span className="flex items-center">
+              <span className="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+              31 de octubre de 1978: Aprobación por las Cortes
+            </span>
+            <span className="flex items-center">
+              <span className="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+              6 de diciembre de 1978: Referéndum
+            </span>
+            <span className="flex items-center">
+              <span className="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+              29 de diciembre de 1978: Entrada en vigor
+            </span>
+          </div>
         </div>
 
         {/* Search Bar */}
@@ -68,9 +77,6 @@ export default function HomePage() {
               <h2 className="text-xl font-semibold text-gray-800">
                 {searchResults.length} resultado{searchResults.length !== 1 ? 's' : ''}
               </h2>
-              <div className="text-sm text-gray-500">
-                {searchResults.length} en enunciados
-              </div>
             </div>
             
             <div className="space-y-3">

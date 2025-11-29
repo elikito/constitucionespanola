@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronDown, ChevronRight, Menu, X } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
 
 interface Title {
   numero: number;
@@ -16,6 +17,11 @@ interface Chapter {
   seccion?: string;
 }
 
+interface Article {
+  numero_articulo: number;
+  titulo?: string;
+}
+
 interface SidebarProps {
   titulos: Title[];
 }
@@ -24,6 +30,8 @@ export default function Sidebar({ titulos }: SidebarProps) {
   const [expandedTitles, setExpandedTitles] = useState<Set<number>>(new Set());
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [tituloArticles, setTituloArticles] = useState<{ [key: number]: Article[] }>({});
+  const [loadingArticles, setLoadingArticles] = useState<{ [key: number]: boolean }>({});
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -32,12 +40,53 @@ export default function Sidebar({ titulos }: SidebarProps) {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const toggleTitle = (numero: number) => {
+  const numberToRoman = (num: number): string => {
+    const romanNumerals: [number, string][] = [
+      [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']
+    ];
+    
+    let result = '';
+    for (const [value, numeral] of romanNumerals) {
+      while (num >= value) {
+        result += numeral;
+        num -= value;
+      }
+    }
+    return result;
+  };
+
+  const fetchArticlesForTitle = async (numero: number) => {
+    if (tituloArticles[numero]) return; // Ya cargados
+    
+    setLoadingArticles(prev => ({ ...prev, [numero]: true }));
+    
+    const roman = numberToRoman(numero);
+    const tituloName = `Título ${roman}`;
+    
+    const { data, error } = await supabase
+      .from('articulos')
+      .select('numero_articulo, titulo')
+      .eq('titulo', tituloName)
+      .order('numero_articulo', { ascending: true });
+
+    if (!error && data) {
+      setTituloArticles(prev => ({ ...prev, [numero]: data }));
+    }
+    
+    setLoadingArticles(prev => ({ ...prev, [numero]: false }));
+  };
+
+  const toggleTitle = async (numero: number) => {
     const newExpanded = new Set(expandedTitles);
     if (newExpanded.has(numero)) {
       newExpanded.delete(numero);
     } else {
       newExpanded.add(numero);
+      // Cargar artículos si no tiene capítulos
+      const titulo = titulos.find(t => t.numero === numero);
+      if (!titulo?.capitulos || titulo.capitulos.length === 0) {
+        await fetchArticlesForTitle(numero);
+      }
     }
     setExpandedTitles(newExpanded);
   };
@@ -94,14 +143,38 @@ export default function Sidebar({ titulos }: SidebarProps) {
             )}
             
             {expandedTitles.has(titulo.numero) && (!titulo.capitulos || titulo.capitulos.length === 0) && (
-              <div className="ml-4 mt-2">
-                <Link
-                  href={`/titulo/${titulo.numero}`}
-                  className="block px-4 py-2 text-sm hover:bg-blue-50 rounded-lg transition text-gray-700"
-                  onClick={() => isMobile && setIsOpen(false)}
-                >
-                  Ver artículos →
-                </Link>
+              <div className="ml-4 mt-2 space-y-1">
+                {loadingArticles[titulo.numero] ? (
+                  <div className="px-4 py-2 text-sm text-gray-500">
+                    Cargando artículos...
+                  </div>
+                ) : tituloArticles[titulo.numero] && tituloArticles[titulo.numero].length > 0 ? (
+                  <>
+                    <div className="px-4 py-1 text-xs text-gray-500 font-semibold">
+                      {tituloArticles[titulo.numero].length} artículos
+                    </div>
+                    <div className="max-h-60 overflow-y-auto">
+                      {tituloArticles[titulo.numero].map((article) => (
+                        <Link
+                          key={article.numero_articulo}
+                          href={`/articulo/${article.numero_articulo}`}
+                          className="block px-4 py-2 text-sm hover:bg-blue-50 rounded-lg transition text-gray-700"
+                          onClick={() => isMobile && setIsOpen(false)}
+                        >
+                          Artículo {article.numero_articulo}
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <Link
+                    href={`/titulo/${titulo.numero}`}
+                    className="block px-4 py-2 text-sm hover:bg-blue-50 rounded-lg transition text-gray-700"
+                    onClick={() => isMobile && setIsOpen(false)}
+                  >
+                    Ver título completo →
+                  </Link>
+                )}
               </div>
             )}
           </div>

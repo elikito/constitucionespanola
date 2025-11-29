@@ -99,11 +99,8 @@ export default function Sidebar({ titulos }: SidebarProps) {
       newExpanded.delete(numero);
     } else {
       newExpanded.add(numero);
-      // Cargar artículos si no tiene capítulos
-      const titulo = titulos.find(t => t.numero === numero);
-      if (!titulo?.capitulos || titulo.capitulos.length === 0) {
-        await fetchArticlesForTitle(numero);
-      }
+      // Siempre cargar artículos al expandir
+      await fetchArticlesForTitle(numero);
     }
     setExpandedTitles(newExpanded);
   };
@@ -137,8 +134,11 @@ export default function Sidebar({ titulos }: SidebarProps) {
               className="w-full flex items-center justify-between px-4 py-2 hover:bg-blue-50 rounded-lg transition text-left"
             >
               <div className="flex flex-col">
-                <span className="text-gray-700 hover:text-blue-900">
+                <span className="text-gray-700 hover:text-blue-900 font-medium">
                   Título {numberToRoman(titulo.numero)}
+                </span>
+                <span className="text-sm text-gray-600">
+                  {titulo.nombre}
                 </span>
                 <span className="text-xs text-gray-500">
                   {getArticleRange(titulo.numero)}
@@ -184,21 +184,14 @@ export default function Sidebar({ titulos }: SidebarProps) {
                           key={article.numero_articulo}
                           href={`/articulo/${article.numero_articulo}`}
                           className="block px-4 py-2 text-sm hover:bg-blue-50 rounded-lg transition text-gray-700"
+                          onClick={() => isMobile && setIsOpen(false)}
                         >
                           Artículo {article.numero_articulo}
                         </Link>
                       ))}
                     </div>
                   </>
-                ) : (
-                  <Link
-                    href={`/titulo/${titulo.numero}`}
-                    className="block px-4 py-2 text-sm hover:bg-blue-50 rounded-lg transition text-gray-700"
-                    onClick={() => isMobile && setIsOpen(false)}
-                  >
-                    Ver título completo →
-                  </Link>
-                )}
+                ) : null}
               </div>
             )}
           </div>
@@ -220,9 +213,9 @@ export default function Sidebar({ titulos }: SidebarProps) {
       <>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="fixed bottom-4 left-4 z-50 bg-blue-900 text-white p-4 rounded-full shadow-lg hover:bg-blue-800 transition"
+          className="md:hidden fixed top-20 left-4 z-50 bg-blue-900 text-white p-3 rounded-full shadow-lg hover:bg-blue-800 transition"
         >
-          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
 
         {isOpen && (
